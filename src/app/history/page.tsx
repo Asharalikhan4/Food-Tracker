@@ -20,10 +20,9 @@ export default function History() {
         try {
             const response = await fetch(`/api/history`);
             if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            } else {
                 const data = await response.json();
                 setError(data?.error);
+                return;
             }
             const data = await response.json();
             setHistoryData(data?.data);
