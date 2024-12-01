@@ -71,7 +71,7 @@ export default function Home() {
         const res = await response.json();
         toast.error(res?.error);
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("Something went wrong");
     } finally {
       setLoading(false);

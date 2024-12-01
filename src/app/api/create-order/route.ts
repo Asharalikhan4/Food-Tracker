@@ -9,7 +9,7 @@ export async function POST(request: Request) {
         if (!body?.date || !body?.totalTiffins || !body?.selectedUsers) {
             return NextResponse.json({ error: "Please fill all the fields" }, { status: 400 });
         };
-        const receivedDate = new Date(body?.date);
+        // const receivedDate = new Date(body?.date);
         const today = new Date();
 
         // Normalize today's date to remove time part

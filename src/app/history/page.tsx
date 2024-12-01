@@ -21,6 +21,9 @@ export default function History() {
             const response = await fetch(`/api/history`);
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
+            } else {
+                const data = await response.json();
+                setError(data?.error);
             }
             const data = await response.json();
             setHistoryData(data?.data);
@@ -61,7 +64,7 @@ export default function History() {
                         <p className="text-center text-gray-500">Loading...</p>
                     ) : error ? (
                         <p className="text-center text-red-500">{error}</p>
-                    ) : historyData.length === 0 ? (
+                    ) : historyData?.length === 0 ? (
                         <p className="text-center text-gray-500">No history available.</p>
                     ) : (
                         <div className="overflow-x-auto">
@@ -74,7 +77,7 @@ export default function History() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {historyData.map((entry) => (
+                                    {historyData?.map((entry) => (
                                         <tr key={entry._id} className="hover:bg-gray-50">
                                             <td className="border border-gray-300 px-4 py-2">
                                                 {new Date(entry?.date).toLocaleDateString()}
