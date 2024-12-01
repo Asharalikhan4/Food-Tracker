@@ -5,6 +5,7 @@ const dbName = process.env.NEXT_PUBLIC_NODE_ENV === "development" ? "food-tracke
 
 export async function GET() {
     try {
+        // trigger deployment
         const client = await clientPromise;
         const db = client.db(dbName);
         const collection = db.collection("history");
