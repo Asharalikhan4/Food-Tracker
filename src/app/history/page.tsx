@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowBigLeft } from "lucide-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 interface HistoryData {
     _id: string;
@@ -26,6 +27,7 @@ export default function History() {
             }
             const data = await response.json();
             setHistoryData(data?.data);
+            toast.success(data?.message);
         } catch (error) {
             console.error(error);
         } finally {
@@ -51,7 +53,6 @@ export default function History() {
                         <Link href="/"
                             className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                         >
-                            {/* <Send size={20} className="mr-2" /> */}
                             <ArrowBigLeft size={20} className="mr-2" />
                             Home
                         </Link>
