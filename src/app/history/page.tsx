@@ -19,7 +19,7 @@ export default function History() {
 
     const fetchHistory = async () => {
         try {
-            const response = await fetch(`/api/history`);
+            const response = await fetch(`/api/history`, { cache: "no-store" });
             if (!response.ok) {
                 const data = await response.json();
                 setError(data?.error);
