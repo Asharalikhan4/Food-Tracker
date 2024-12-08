@@ -18,6 +18,12 @@ const AuthModal: React.FC = () => {
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            handleSubmit();
+        }
+    };
+
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50">
             <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
@@ -26,6 +32,7 @@ const AuthModal: React.FC = () => {
                     type="password"
                     className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={code}
+                    onKeyDown={handleKeyDown}
                     onChange={(e) => setCode(e.target.value)}
                     placeholder="Enter code"
                 />

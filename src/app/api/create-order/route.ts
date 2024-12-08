@@ -24,14 +24,14 @@ export async function POST(request: Request) {
         const db = client.db(dbName);
         const collection = db.collection("history");
 
-        const result = await collection.insertOne({
+        await collection.insertOne({
             date: body.date,
             totalTiffins: body.totalTiffins,
             selectedUsers: body.selectedUsers,
             createdAt: new Date(),
         });
 
-        return NextResponse.json({ message: "Data received successfully!", id: result.insertedId });
+        return NextResponse.json({ message: "Data received successfully!" }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

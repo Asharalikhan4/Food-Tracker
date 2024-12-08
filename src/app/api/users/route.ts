@@ -7,9 +7,9 @@ export async function GET() {
     try {
         const client = await clientPromise;
         const db = client.db(dbName);
-        const collection = db.collection("history");
+        const collection = db.collection("users");
         const entities = await collection.find({}).toArray();
-        return NextResponse.json({ message: "Latest history fetched.", data: entities });
+        return NextResponse.json({ message: "Fetch successful!", data: entities });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

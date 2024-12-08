@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Trash2, Plus, Calendar, Send, Loader } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function Home() {
-
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([
     { id: 1, name: 'Ashar Ali Khan', selected: false },
@@ -79,6 +79,33 @@ export default function Home() {
     }
   };
 
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/users`, { cache: "no-store" });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to fetch users");
+      }
+      const data = await response.json();
+      // setUsers(data?.data.map((user: { id: string; name: string }) => ({
+      //   ...user,
+      //   selected: false,
+      // })));
+      toast.success(data.message || "Users loaded successfully");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch users on component mount
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md">
@@ -96,7 +123,7 @@ export default function Home() {
           {/* Date and Tiffin Selection */}
           <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block font-medium text-gray-700 mb-2">
                 Select Date
               </label>
               <div className="flex items-center gap-2 text-black">
@@ -109,7 +136,7 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block font-medium text-gray-700 mb-2">
                 Total Tiffins for Today
               </label>
               <input
@@ -122,28 +149,18 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Add New User */}
-          <div className="mb-6">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Enter new user name"
-                value={newUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
-              />
-              <button
-                onClick={addUser}
-                className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          {/* User List */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="font-medium text-gray-700">Select Users</span>
+              <Link
+                href="/create-user"
+                className="flex items-center px-4 py-1 bg-green-600 text-white rounded-md hover:bg-green-700"
               >
                 <Plus size={20} className="mr-2" />
                 Add User
-              </button>
+              </Link>
             </div>
-          </div>
-
-          {/* User List */}
-          <div className="space-y-3">
             {users.map((user) => (
               <div
                 key={user.id}
@@ -182,7 +199,7 @@ export default function Home() {
           <div className="mt-6 flex justify-between">
 
             <Link href="/history"
-              className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
             >
               <Calendar className="mr-2" size={20} />
               History
@@ -190,7 +207,7 @@ export default function Home() {
 
             <button
               onClick={handleSubmit}
-              className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
             >
               {
                 loading ? (
@@ -203,7 +220,6 @@ export default function Home() {
                 )
               }
             </button>
-
           </div>
         </div>
       </div>
