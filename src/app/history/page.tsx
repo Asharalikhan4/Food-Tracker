@@ -3,12 +3,14 @@ import React, { useState, useEffect } from "react";
 import { ArrowBigLeft } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import HistorySummary from "../components/AuthModal/HistorySummery/HistorySummery";
 
 interface HistoryData {
     _id: string;
     date: string;
-    totalTiffins: number;
+    totalTiffins: string;
     selectedUsers: string[];
+    createdAt: string;
 };
 
 export default function History() {
@@ -92,6 +94,7 @@ export default function History() {
                                     ))}
                                 </tbody>
                             </table>
+                            <HistorySummary historyData={historyData} />
                         </div>
                     )}
                 </div>
